@@ -1,3 +1,9 @@
 pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+shap
+lime
 joblib
-scikit-learn 
+jupyter
