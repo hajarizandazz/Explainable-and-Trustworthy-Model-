@@ -7,13 +7,10 @@ DATA_PATH = Path("data/raw/diabetes.csv")
 
 
 # Charge le dataset depuis le fichier CSV
-def load_dataset(csv_path: Path) -> pd.DataFrame:
+def load_dataset(csv_path: Path = DATA_PATH) -> pd.DataFrame:
     if not csv_path.exists():
         raise FileNotFoundError(f"File not found: {csv_path}")
-
-    df = pd.read_csv(csv_path)
-    return df
-
+    return pd.read_csv(csv_path)
 
 # Affiche les informations principales du dataset
 def display_dataset_info(df: pd.DataFrame) -> None:

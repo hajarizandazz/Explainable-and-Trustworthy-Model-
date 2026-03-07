@@ -18,9 +18,29 @@ METRICS_DIR = Path("evaluation/metrics")
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 METRICS_DIR.mkdir(parents=True, exist_ok=True)
 
+# Vérifie que les fichiers générés par preprocess.py existent
+def check_processed_files_exist() -> None:
+    required_files = [
+        PROCESSED_DIR / "X_train.csv",
+        PROCESSED_DIR / "X_test.csv",
+        PROCESSED_DIR / "X_train_scaled.csv",
+        PROCESSED_DIR / "X_test_scaled.csv",
+        PROCESSED_DIR / "y_train.csv",
+        PROCESSED_DIR / "y_test.csv",
+    ]
+
+    missing_files = [file for file in required_files if not file.exists()]
+
+    if missing_files:
+        missing_str = "\n".join(str(file) for file in missing_files)
+        raise FileNotFoundError(
+            "Some processed files are missing. Run preprocess.py first.\n"
+            f"Missing files:\n{missing_str}"
+        )
+
 
 # Charge les datasets prétraités nécessaires
-def load_data():
+def load_processed_data():
     X_train = pd.read_csv(PROCESSED_DIR / "X_train.csv")
     X_test = pd.read_csv(PROCESSED_DIR / "X_test.csv")
     X_train_scaled = pd.read_csv(PROCESSED_DIR / "X_train_scaled.csv")
@@ -129,8 +149,10 @@ def save_best_model(best_model_name, trained_models):
 
 # Exécute tout le pipeline d'entraînement et de comparaison
 def main():
+    # Vérifie que les fichiers de preprocess.py existent
+    check_processed_files_exist()
     # Charge les données déjà prétraitées
-    X_train, X_test, X_train_scaled, X_test_scaled, y_train, y_test = load_data()
+    X_train, X_test, X_train_scaled, X_test_scaled, y_train, y_test = load_processed_data()
 
     # Construit les modèles à comparer
     models = build_models()

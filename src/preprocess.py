@@ -6,10 +6,9 @@ from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import joblib
-
+from load_data import load_dataset
 
 # les chemins principaux du projet
-RAW_DATA_PATH = Path("data/raw/diabetes.csv")
 PROCESSED_DIR = Path("data/processed")
 SCALER_PATH = Path("models/scaler.pkl")
 
@@ -17,13 +16,6 @@ SCALER_PATH = Path("models/scaler.pkl")
 # Crée les dossiers de sortie si nécessaire
 PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 SCALER_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-
-# Charge le dataset brut depuis le fichier CSV
-def load_dataset(csv_path: Path) -> pd.DataFrame:
-    if not csv_path.exists():
-        raise FileNotFoundError(f"File not found: {csv_path}")
-    return pd.read_csv(csv_path)
 
 
 # Affiche un résumé simple avant preprocessing
@@ -144,7 +136,7 @@ def display_processed_info(
 # Exécute tout le pipeline de preprocessing
 def main() -> None:
     # Charge les données brutes
-    df = load_dataset(RAW_DATA_PATH)
+    df = load_dataset()
 
     # Affiche les infos de départ
     display_basic_info(df)
